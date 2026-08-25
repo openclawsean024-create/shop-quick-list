@@ -27,3 +27,4 @@ yarn-error.log*
 # Build output (we keep the precompiled CSS in assets/, but ignore if rebuilt elsewhere)
 /dist/
 /build/
+.vercel
