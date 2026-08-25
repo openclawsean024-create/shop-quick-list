@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>電商上架快手 — 商品、文案、圖片一次整理好</title>
+
+<!-- Google Fonts: Noto Sans TC -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS (precompiled locally — see assets/tailwind.min.css) -->
+<link rel="stylesheet" href="assets/tailwind.min.css" />
+
+<!-- Lucide Icons (vendored locally — see assets/lucide.min.js) -->
+<script src="assets/lucide.min.js"></script>
+
+<!-- Custom CSS -->
+<style>
+  :root {
+    --brand: #2F8F6E;
+    --brand-hover: #27785B;
+    --brand-tint: #E8F4EE;
+    --paper: #F4EFE6;
+    --ink: #111827;
+    --muted: #6B7280;
+    --line: #E5E7EB;
+  }
+  html, body { font-family: 'Noto Sans TC', sans-serif; color: var(--ink); }
+  html.js-ready .fade-up { opacity: 0; }
+  body { background: var(--paper); }
+
+  /* ===== Toggle Switch ===== */
+  .toggle {
+    width: 36px; height: 20px;
+    border-radius: 9999px;
+    background: #d1d5db;
+    position: relative;
+    transition: background 200ms ease;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 16px; height: 16px;
+    background: #ffffff;
+    border-radius: 9999px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    transition: transform 200ms ease;
+  }
+  .toggle.on { background: var(--brand); }
+  .toggle.on::after { transform: translateX(16px); }
+
+  /* ===== Fade-up on load ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* .fade-up opacity is controlled by html.js-ready (added by JS). If JS fails to run, content stays visible. */
+
+  /* ===== Pulse dot for active timeline ===== */
+  @keyframes ringPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(47,143,110,0.45); }
+    70%  { box-shadow: 0 0 0 10px rgba(47,143,110,0); }
+    100% { box-shadow: 0 0 0 0 rgba(47,143,110,0); }
+  }
+  .pulse-dot { animation: ringPulse 1.8s infinite; }
+
+  /* Hide native scrollbars on the app mockup content */
+  .scroll-area::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scroll-area::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 9999px; }
+  .scroll-area::-webkit-scrollbar-track { background: transparent; }
+
+  /* Field input look */
+  .field {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: var(--ink);
+    width: 100%;
+  }
+  .field:focus { outline: 2px solid #BFE3D2; border-color: var(--brand); }
+
+  /* Step connector line color */
+  .step-line { background: #E5E7EB; }
+  .step-line.done { background: var(--brand); }
+
+  /* Check bullet */
+  .check-bullet {
+    width: 18px; height: 18px;
+    border-radius: 9999px;
+    background: var(--brand-tint);
+    color: var(--brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+
+<main class="relative">
+
+  <!-- ============================== HERO SECTION ============================== -->
+  <section class="relative">
+    <!-- Background blurred green leaf shapes (right side) -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
+      <div class="absolute -top-10 right-[-60px] w-[360px] h-[360px] rounded-full bg-emerald-300/30 blur-3xl"></div>
+      <div class="absolute top-[180px] right-[20%] w-[280px] h-[280px] rounded-full bg-green-400/25 blur-3xl"></div>
+      <div class="absolute bottom-[-80px] right-[10%] w-[420px] h-[420px] rounded-full bg-emerald-200/40 blur-3xl"></div>
+      <div class="absolute top-[60px] right-[55%] w-[180px] h-[180px] rounded-full bg-green-300/20 blur-3xl"></div>
+    </div>
+
+    <div class="relative max-w-[1440px] mx-auto px-6 lg:px-10 pt-10 pb-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+
+      <!-- ============================== LEFT: APP MOCKUP ============================== -->
+      <div class="lg:col-span-9 fade-up -translate-y-1">
+        <div class="rounded-[20px] bg-white shadow-mockup border border-gray-200 overflow-hidden">
+
+          <div class="flex">
+
+            <!-- ============== SIDEBAR ============== -->
+            <aside class="w-[220px] shrink-0 border-r border-gray-200 bg-white flex flex-col">
+              <!-- Logo -->
+              <div class="h-16 flex items-center gap-3 px-5 border-b border-gray-100">
+                <div class="w-9 h-9 rounded-[10px] bg-brand flex items-center justify-center shadow-sm">
+                  <i data-lucide="package" class="w-5 h-5 text-white"></i>
+                </div>
+                <div class="leading-tight">
+                  <div class="text-sm font-bold text-ink">上架快手</div>
+                  <div class="text-[11px] text-muted">Listing Studio</div>
+                </div>
+              </div>
+
+              <!-- Nav -->
+              <nav class="flex-1 py-3 px-3 text-sm">
+                <!-- Active item -->
+                <a href="#" class="flex items-center gap-3 h-10 px-3 rounded-lg bg-brand-tint text-brand font-bold">
+                  <i data-lucide="layout-dashboard" class="w-[18px] h-[18px]"></i>
+                  <span>上架工作台</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 h-10 px-3 rounded-lg text-ink hover:bg-gray-50">
+                  <i data-lucide="box" class="w-[18px] h-[18px] text-muted"></i>
+                  <span>商品管理</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 h-10 px-3 rounded-lg text-ink hover:bg-gray-50">
+                  <i data-lucide="image" class="w-[18px] h-[18px] text-muted"></i>
+                  <span>素材管理</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 h-10 px-3 rounded-lg text-ink hover:bg-gray-50">
+                  <i data-lucide="file-text" class="w-[18px] h-[18px] text-muted"></i>
+                  <span>文案庫</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 h-10 px-3 rounded-lg text-ink hover:bg-gray-50">
+                  <i data-lucide="layers" class="w-[18px] h-[18px] text-muted"></i>
+                  <span>模板中心</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 h-10 px-3 rounded-lg text-ink hover:bg-gray-50">
+                  <i data-lucide="plug" class="w-[18px] h-[18px] text-muted"></i>
+                  <span>平台管理</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 h-10 px-3 rounded-lg text-ink hover:bg-gray-50">
+                  <i data-lucide="history" class="w-[18px] h-[18px] text-muted"></i>
+                  <span>上架紀錄</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 h-10 px-3 rounded-lg text-ink hover:bg-gray-50">
+                  <i data-lucide="settings" class="w-[18px] h-[18px] text-muted"></i>
+                  <span>設定</span>
+                </a>
+
+                <!-- spacer pushes bottom items -->
+                <div class="my-4 border-t border-gray-100"></div>
+
+                <a href="#" class="flex items-center gap-3 h-10 px-3 rounded-lg text-ink hover:bg-gray-50">
+                  <i data-lucide="graduation-cap" class="w-[18px] h-[18px] text-muted"></i>
+                  <span>教學中心</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 h-10 px-3 rounded-lg text-ink hover:bg-gray-50">
+                  <i data-lucide="message-circle" class="w-[18px] h-[18px] text-muted"></i>
+                  <span>聯絡我們</span>
+                </a>
+              </nav>
+
+              <!-- Sidebar footer card -->
+              <div class="m-3 p-3 rounded-xl bg-brand-tint">
+                <div class="flex items-center gap-2 mb-1">
+                  <i data-lucide="zap" class="w-4 h-4 text-brand"></i>
+                  <span class="text-xs font-bold text-brand">Pro 方案</span>
+                </div>
+                <p class="text-[11px] text-muted leading-snug">解鎖 AI 文案與多平台同步</p>
+              </div>
+            </aside>
+
+            <!-- ============== APP MAIN ============== -->
+            <div class="flex-1 min-w-0 flex flex-col bg-[#FAFBF9]">
+
+              <!-- Header -->
+              <header class="h-16 px-6 flex items-center justify-between border-b border-gray-100 bg-white">
+                <div class="flex items-center gap-3">
+                  <button class="w-8 h-8 rounded-md hover:bg-gray-50 flex items-center justify-center text-muted" aria-label="返回">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                  </button>
+                  <h2 class="text-xl font-bold text-ink">新增商品</h2>
+                  <span class="ml-2 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[11px] font-medium">草稿</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <button class="w-9 h-9 rounded-full hover:bg-gray-50 flex items-center justify-center text-muted relative" aria-label="通知">
+                    <i data-lucide="bell" class="w-[18px] h-[18px]"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                  </button>
+                  <div class="flex items-center gap-2 pl-3 border-l border-gray-100">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white flex items-center justify-center text-xs font-bold">小</div>
+                    <div class="leading-tight hidden md:block">
+                      <div class="text-xs font-medium text-ink">王小明</div>
+                      <div class="text-[11px] text-muted">植日生 · 店長</div>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-muted"></i>
+                  </div>
+                </div>
+              </header>
+
+              <!-- Scrollable content -->
+              <div class="flex-1 overflow-y-auto scroll-area px-6 py-5 space-y-5">
+
+                <!-- ===== Step Indicator ===== -->
+                <div class="bg-white rounded-2xl border border-gray-200 p-5 shadow-card">
+                  <div class="flex items-center gap-4 flex-wrap">
+                    <!-- Steps -->
+                    <ol class="flex items-center gap-3 flex-wrap flex-1 min-w-0">
+                      <!-- Step 1 active -->
+                      <li class="flex items-center gap-2 shrink-0">
+                        <span class="w-7 h-7 rounded-full bg-brand text-white text-xs font-bold flex items-center justify-center">1</span>
+                        <span class="text-sm font-bold text-brand">基本資訊</span>
+                      </li>
+                      <li class="flex-1 h-[2px] rounded step-line done"></li>
+
+                      <li class="flex items-center gap-2 shrink-0">
+                        <span class="w-7 h-7 rounded-full bg-gray-100 text-muted text-xs font-bold flex items-center justify-center">2</span>
+                        <span class="text-sm text-muted">商品內容</span>
+                      </li>
+                      <li class="flex-1 h-[2px] rounded step-line"></li>
+
+                      <li class="flex items-center gap-2 shrink-0">
+                        <span class="w-7 h-7 rounded-full bg-gray-100 text-muted text-xs font-bold flex items-center justify-center">3</span>
+                        <span class="text-sm text-muted">平台同步</span>
+                      </li>
+                      <li class="flex-1 h-[2px] rounded step-line"></li>
+
+                      <li class="flex items-center gap-2 shrink-0">
+                        <span class="w-7 h-7 rounded-full bg-gray-100 text-muted text-xs font-bold flex items-center justify-center">4</span>
+                        <span class="text-sm text-muted">完成上架</span>
+                      </li>
+                    </ol>
+
+                    <!-- Action buttons -->
+                    <div class="flex items-center gap-2 shrink-0 ml-auto">
+                      <button class="h-9 px-4 rounded-lg border border-gray-300 bg-white text-sm font-medium text-ink hover:bg-gray-50">保存草稿</button>
+                      <button class="h-9 px-4 rounded-lg bg-brand hover:bg-[#27785B] text-white text-sm font-medium flex items-center gap-1.5">
+                        下一步
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ===== 3 Content Cards ===== -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+                  <!-- ========== Card 1: 商品照片 ========== -->
+                  <section class="bg-white rounded-2xl border border-gray-200 p-4 shadow-card flex flex-col">
+                    <div class="flex items-center justify-between mb-3">
+                      <h3 class="text-base font-semibold text-ink flex items-center gap-2">
+                        <i data-lucide="image" class="w-4 h-4 text-brand"></i>
+                        商品照片
+                      </h3>
+                      <span class="text-[11px] text-muted">5/8</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                      <!-- Big bottle image -->
+                      <div class="col-span-1 row-span-2 rounded-xl overflow-hidden bg-gradient-to-b from-[#E9E2D2] to-[#D6CCB7] relative">
+                        <!-- Pump bottle inline SVG -->
+                        <svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg" class="w-full h-full block">
+                          <defs>
+                            <linearGradient id="bottleBody" x1="0" x2="1" y1="0" y2="0">
+                              <stop offset="0%"  stop-color="#F5EEDF"/>
+                              <stop offset="45%" stop-color="#EBE0CB"/>
+                              <stop offset="100%" stop-color="#C9BCA0"/>
+                            </linearGradient>
+                            <linearGradient id="bottleShine" x1="0" x2="0" y1="0" y2="1">
+                              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+                              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                            </linearGradient>
+                            <linearGradient id="cap" x1="0" x2="0" y1="0" y2="1">
+                              <stop offset="0%" stop-color="#F8F4EA"/>
+                              <stop offset="100%" stop-color="#D9CFB7"/>
+                            </linearGradient>
+                            <linearGradient id="pump" x1="0" x2="0" y1="0" y2="1">
+                              <stop offset="0%" stop-color="#3F3A30"/>
+                              <stop offset="100%" stop-color="#1F1B14"/>
+                            </linearGradient>
+                            <radialGradient id="leaf" cx="50%" cy="50%" r="50%">
+                              <stop offset="0%" stop-color="#7BBF9A"/>
+                              <stop offset="100%" stop-color="#3F8F66"/>
+                            </radialGradient>
+                          </defs>
+
+                          <!-- background leaf shapes -->
+                          <ellipse cx="35"  cy="80"  rx="42" ry="22" fill="url(#leaf)" opacity="0.55" transform="rotate(-25 35 80)"/>
+                          <ellipse cx="205" cy="70"  rx="48" ry="24" fill="url(#leaf)" opacity="0.45" transform="rotate(20 205 70)"/>
+                          <ellipse cx="220" cy="150" rx="36" ry="18" fill="url(#leaf)" opacity="0.35" transform="rotate(-15 220 150)"/>
+
+                          <!-- ground shadow -->
+                          <ellipse cx="120" cy="295" rx="78" ry="9" fill="#000" opacity="0.18"/>
+
+                          <!-- pump cap (top) -->
+                          <rect x="100" y="28" width="40" height="14" rx="3" fill="url(#cap)"/>
+                          <rect x="90"  y="40" width="60" height="10" rx="3" fill="#C8BD9F"/>
+
+                          <!-- pump head -->
+                          <path d="M82 50 H158 V72 Q158 80 150 80 H90 Q82 80 82 72 Z" fill="url(#pump)"/>
+                          <!-- pump nozzle -->
+                          <path d="M150 56 H176 Q182 56 182 62 V68 Q182 74 176 74 H150 Z" fill="#1F1B14"/>
+                          <circle cx="120" cy="65" r="2.5" fill="#9aa3a0"/>
+
+                          <!-- collar -->
+                          <rect x="92" y="78" width="56" height="10" rx="2" fill="#B8AC8E"/>
+
+                          <!-- bottle neck -->
+                          <path d="M96 88 H144 V104 H96 Z" fill="url(#bottleBody)"/>
+                          <!-- bottle body -->
+                          <path d="M70 104 Q70 100 76 100 H164 Q170 100 170 104 V268 Q170 286 152 286 H88 Q70 286 70 268 Z" fill="url(#bottleBody)"/>
+                          <!-- shine -->
+                          <path d="M82 110 Q82 106 86 106 H100 Q104 106 104 110 V250 Q104 270 90 274 Q82 270 82 250 Z" fill="url(#bottleShine)" opacity="0.7"/>
+
+                          <!-- label -->
+                          <rect x="80" y="150" width="80" height="110" rx="4" fill="#FBFBF6" stroke="#E5E0CF"/>
+                          <text x="120" y="172" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="10" font-weight="700" fill="#2F8F6E">植日生</text>
+                          <line x1="92" y1="178" x2="148" y2="178" stroke="#E5E0CF"/>
+                          <text x="120" y="196" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="9" font-weight="700" fill="#1F2937">植萃保濕</text>
+                          <text x="120" y="208" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="9" font-weight="700" fill="#1F2937">潔顏慕斯</text>
+                          <text x="120" y="225" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="7" fill="#6B7280">BOTANICAL FOAM</text>
+                          <text x="120" y="240" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="7" fill="#6B7280">Cleanser 300ml</text>
+                          <circle cx="120" cy="252" r="4" fill="#2F8F6E"/>
+
+                          <!-- bottom subtle reflection -->
+                          <path d="M70 268 Q70 286 88 286 H152 Q170 286 170 268 L170 280 H70 Z" fill="#000" opacity="0.08"/>
+                        </svg>
+                      </div>
+
+                      <!-- Thumbnails -->
+                      <div class="grid grid-cols-2 gap-2">
+                        <div class="aspect-square rounded-md bg-gradient-to-br from-[#EFE7D5] to-[#C9BCA0] border border-gray-200"></div>
+                        <div class="aspect-square rounded-md bg-gradient-to-br from-[#E8EFE2] to-[#B5CFB8] border border-gray-200"></div>
+                        <div class="aspect-square rounded-md bg-gradient-to-br from-[#F1ECE0] to-[#D9CFB7] border border-gray-200"></div>
+                        <div class="aspect-square rounded-md bg-gradient-to-br from-[#E4ECE6] to-[#A8C0B0] border border-gray-200"></div>
+                      </div>
+
+                      <!-- Upload button -->
+                      <button class="col-span-2 h-9 mt-1 rounded-lg border border-dashed border-gray-300 text-sm text-muted hover:bg-gray-50 hover:text-ink flex items-center justify-center gap-1.5">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        上傳圖片
+                      </button>
+                    </div>
+                  </section>
+
+                  <!-- ========== Card 2: AI 文案 ========== -->
+                  <section id="ai-card" class="bg-white rounded-2xl border border-gray-200 p-4 shadow-card flex flex-col">
+                    <div class="flex items-center justify-between mb-3">
+                      <h3 class="text-base font-semibold text-ink flex items-center gap-2">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-brand"></i>
+                        AI 文案
+                      </h3>
+                      <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium flex items-center gap-1">
+                        <i data-lucide="check" class="w-3 h-3"></i> AI 生成完成
+                      </span>
+                    </div>
+
+                    <!-- AI Title -->
+                    <div class="mb-3">
+                      <div class="flex items-center justify-between mb-1.5">
+                        <label class="text-xs font-medium text-muted">AI 標題</label>
+                        <span class="text-xs text-muted">28/30</span>
+                      </div>
+                      <div class="field text-[13px] leading-snug">溫和植萃洗卸慕斯｜深層清潔＋保濕呵護，敏弱肌適用</div>
+                    </div>
+
+                    <div class="border-t border-gray-100 my-2"></div>
+
+                    <!-- Highlight copy -->
+                    <div id="ai-copy-block" class="flex-1">
+                      <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-medium text-muted">重點文案</span>
+                        <span class="text-[11px] text-muted">已優化 SEO 關鍵字</span>
+                      </div>
+                      <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-[13px] leading-snug">
+                          <span class="check-bullet"><i data-lucide="check" class="w-3 h-3"></i></span>
+                          <span>胺基酸溫和配方，洗後不緊繃</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-[13px] leading-snug">
+                          <span class="check-bullet"><i data-lucide="check" class="w-3 h-3"></i></span>
+                          <span>添加積雪草與綠茶萃取，舒緩保濕</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-[13px] leading-snug">
+                          <span class="check-bullet"><i data-lucide="check" class="w-3 h-3"></i></span>
+                          <span>細緻泡沫深入毛孔，帶走髒污與多餘油脂</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-[13px] leading-snug">
+                          <span class="check-bullet"><i data-lucide="check" class="w-3 h-3"></i></span>
+                          <span>敏感肌、痘痘肌也適用</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-[13px] leading-snug">
+                          <span class="check-bullet"><i data-lucide="check" class="w-3 h-3"></i></span>
+                          <span>不含酒精、香精、色素，溫和安心</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-3 mb-3">
+                      <button id="regen-copy" class="h-8 px-3 rounded-md border border-gray-200 hover:bg-gray-50 text-xs font-medium text-ink flex items-center gap-1.5">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                        重新生成文案
+                      </button>
+                      <span class="text-[11px] text-muted">餘額 28 次</span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="border-t border-gray-100 pt-3">
+                      <div class="flex items-center justify-between mb-1.5">
+                        <label class="text-xs font-medium text-muted">商品描述</label>
+                        <span class="text-xs text-muted">78/500</span>
+                      </div>
+                      <div class="rounded-lg bg-gray-50 border border-gray-100 px-3 py-2 text-[12.5px] leading-relaxed text-ink/80">
+                        植萃保濕潔顏慕斯，嚴選多種植物萃取與胺基酸配方，溫和洗淨髒污與殘妝，洗後不緊繃。添加積雪草與綠茶萃取，舒緩敏弱肌膚，全家人都適用。
+                      </div>
+                    </div>
+                  </section>
+
+                  <!-- ========== Card 3: 平台同步 ========== -->
+                  <section class="bg-white rounded-2xl border border-gray-200 p-4 shadow-card flex flex-col">
+                    <div class="flex items-center justify-between mb-3">
+                      <h3 class="text-base font-semibold text-ink flex items-center gap-2">
+                        <i data-lucide="cloud" class="w-4 h-4 text-brand"></i>
+                        平台同步
+                      </h3>
+                      <span class="text-[11px] text-muted">3/4 已連接</span>
+                    </div>
+
+                    <ul class="space-y-2.5">
+                      <li class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-md bg-[#EE5622] text-white flex items-center justify-center text-[11px] font-extrabold tracking-tight">S</div>
+                        <div class="flex-1 min-w-0">
+                          <div class="text-[13px] font-medium text-ink">蝦皮購物</div>
+                          <div class="text-[11px] text-emerald-600 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>已連接
+                          </div>
+                        </div>
+                        <div class="toggle on"></div>
+                      </li>
+
+                      <li class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-md bg-gradient-to-br from-[#FF3D7F] to-[#E0005C] text-white flex items-center justify-center text-[10px] font-extrabold">momo</div>
+                        <div class="flex-1 min-w-0">
+                          <div class="text-[13px] font-medium text-ink">momo 購物網</div>
+                          <div class="text-[11px] text-emerald-600 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>已連接
+                          </div>
+                        </div>
+                        <div class="toggle on"></div>
+                      </li>
+
+                      <li class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-md bg-gradient-to-br from-[#FF7A1A] to-[#E04E00] text-white flex items-center justify-center text-[9px] font-extrabold">PChome</div>
+                        <div class="flex-1 min-w-0">
+                          <div class="text-[13px] font-medium text-ink">PChome 24h購物</div>
+                          <div class="text-[11px] text-emerald-600 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>已連接
+                          </div>
+                        </div>
+                        <div class="toggle on"></div>
+                      </li>
+
+                      <li class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-md bg-gradient-to-br from-[#5B2BB1] to-[#3D1380] text-white flex items-center justify-center text-[10px] font-extrabold italic">y!</div>
+                        <div class="flex-1 min-w-0">
+                          <div class="text-[13px] font-medium text-ink">Yahoo 購物中心</div>
+                          <div class="text-[11px] text-muted flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>未連接
+                          </div>
+                        </div>
+                        <div class="toggle"></div>
+                      </li>
+                    </ul>
+
+                    <button class="mt-3 h-9 rounded-lg border border-dashed border-gray-300 text-sm text-muted hover:bg-gray-50 hover:text-ink flex items-center justify-center gap-1.5">
+                      <i data-lucide="plus" class="w-4 h-4"></i>
+                      新增平台
+                    </button>
+
+                    <button class="mt-3 h-11 rounded-xl bg-brand hover:bg-[#27785B] text-white text-sm font-bold flex items-center justify-center gap-2 shadow-[0_8px_20px_-6px_rgba(47,143,110,0.5)]">
+                      <i data-lucide="send" class="w-4 h-4"></i>
+                      立即上架
+                    </button>
+                  </section>
+
+                </div>
+
+                <!-- ===== Product Info ===== -->
+                <section class="bg-white rounded-2xl border border-gray-200 p-5 shadow-card">
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-ink flex items-center gap-2">
+                      <i data-lucide="tag" class="w-4 h-4 text-brand"></i>
+                      商品資訊
+                    </h3>
+                    <button class="text-xs text-brand hover:underline">編輯</button>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label class="block text-xs font-medium text-muted mb-1.5">商品名稱</label>
+                      <div class="field">植萃保濕潔顏慕斯 300ml</div>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-medium text-muted mb-1.5">分類</label>
+                      <div class="field flex items-center justify-between">
+                        <span>美妝保養 <span class="text-muted">＞</span> 臉部清潔</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-muted"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-medium text-muted mb-1.5">品牌</label>
+                      <div class="field flex items-center justify-between">
+                        <span>植日生</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-muted"></i>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- ===== Timeline ===== -->
+                <section class="bg-white rounded-2xl border border-gray-200 p-5 shadow-card">
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-ink flex items-center gap-2">
+                      <i data-lucide="route" class="w-4 h-4 text-brand"></i>
+                      上架流程
+                    </h3>
+                    <span class="text-xs text-muted">預計 2 分鐘後完成</span>
+                  </div>
+
+                  <ol class="relative flex items-start">
+                    <!-- Connector line behind -->
+                    <div class="absolute left-4 right-4 top-4 h-[2px] bg-gray-200"></div>
+                    <div class="absolute left-4 top-4 h-[2px] bg-brand" style="width: calc(50% - 8px);"></div>
+
+                    <!-- Node 1 done -->
+                    <li class="flex-1 relative z-10 flex flex-col items-center">
+                      <div class="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center shadow-[0_4px_10px_-2px_rgba(47,143,110,0.5)]">
+                        <i data-lucide="check" class="w-4 h-4"></i>
+                      </div>
+                      <div class="text-center mt-2">
+                        <div class="text-[13px] font-medium text-ink">草稿已儲存</div>
+                        <div class="text-[11px] text-muted">13:20</div>
+                      </div>
+                    </li>
+
+                    <!-- Node 2 done -->
+                    <li class="flex-1 relative z-10 flex flex-col items-center">
+                      <div class="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center">
+                        <i data-lucide="check" class="w-4 h-4"></i>
+                      </div>
+                      <div class="text-center mt-2">
+                        <div class="text-[13px] font-medium text-ink">內容已完成</div>
+                        <div class="text-[11px] text-muted">13:25</div>
+                      </div>
+                    </li>
+
+                    <!-- Node 3 active pulse -->
+                    <li class="flex-1 relative z-10 flex flex-col items-center">
+                      <div class="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center pulse-dot">
+                        <i data-lucide="loader" class="w-4 h-4"></i>
+                      </div>
+                      <div class="text-center mt-2">
+                        <div class="text-[13px] font-bold text-brand">平台同步中</div>
+                        <div class="text-[11px] text-muted">13:26</div>
+                      </div>
+                    </li>
+
+                    <!-- Node 4 pending -->
+                    <li class="flex-1 relative z-10 flex flex-col items-center">
+                      <div class="w-8 h-8 rounded-full bg-white border-2 border-gray-200 text-muted flex items-center justify-center">
+                        <i data-lucide="circle-dot" class="w-4 h-4"></i>
+                      </div>
+                      <div class="text-center mt-2">
+                        <div class="text-[13px] font-medium text-muted">上架完成</div>
+                        <div class="text-[11px] text-muted">—</div>
+                      </div>
+                    </li>
+                  </ol>
+                </section>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================== RIGHT: HERO MARKETING ============================== -->
+      <div class="lg:col-span-3 flex flex-col">
+        <div class="fade-up">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/70 border border-emerald-100 text-brand text-xs font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
+            一鍵上架 · AI 賦能
+          </span>
+          <h1 class="mt-4 text-5xl md:text-6xl font-extrabold text-ink leading-[1.05] tracking-tight">
+            電商上架<br/>快手
+          </h1>
+          <p class="mt-3 text-xl text-muted leading-snug">
+            商品、文案、圖片<br/>一次整理好
+          </p>
+          <p class="mt-4 text-sm text-muted/90 leading-relaxed max-w-md">
+            從拍照、修圖、文案到多平台同步發佈，整合在一個乾淨直覺的工作台。讓你把時間留給選品，把上架交給 AI。
+          </p>
+
+          <!-- Feature list -->
+          <ul class="mt-7 flex items-stretch gap-0 divide-x divide-gray-200/80 rounded-2xl bg-white/60 backdrop-blur border border-white/80 shadow-card">
+            <li class="flex-1 flex flex-col items-center justify-center gap-2 px-4 py-5">
+              <span class="w-10 h-10 rounded-xl bg-brand-tint text-brand flex items-center justify-center">
+                <i data-lucide="image" class="w-5 h-5"></i>
+              </span>
+              <span class="text-sm font-medium text-ink">商品照片</span>
+            </li>
+            <li class="flex-1 flex flex-col items-center justify-center gap-2 px-4 py-5">
+              <span class="w-10 h-10 rounded-xl bg-brand-tint text-brand flex items-center justify-center">
+                <i data-lucide="pencil" class="w-5 h-5"></i>
+              </span>
+              <span class="text-sm font-medium text-ink">AI 文案</span>
+            </li>
+            <li class="flex-1 flex flex-col items-center justify-center gap-2 px-4 py-5">
+              <span class="w-10 h-10 rounded-xl bg-brand-tint text-brand flex items-center justify-center">
+                <i data-lucide="cloud-upload" class="w-5 h-5"></i>
+              </span>
+              <span class="text-sm font-medium text-ink">平台同步</span>
+            </li>
+          </ul>
+
+          <!-- CTAs -->
+          <div class="mt-7 flex flex-wrap gap-3">
+            <button class="h-12 px-6 rounded-xl bg-brand hover:bg-[#27785B] text-white font-bold shadow-[0_10px_25px_-6px_rgba(47,143,110,0.55)] flex items-center gap-2">
+              免費開始 14 天
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+            <button class="h-12 px-5 rounded-xl bg-white/80 border border-gray-200 hover:bg-white text-ink font-medium flex items-center gap-2">
+              <i data-lucide="play-circle" class="w-4 h-4 text-brand"></i>
+              看 60 秒示範
+            </button>
+          </div>
+
+          <!-- Social proof -->
+          <div class="mt-7 flex items-center gap-4 text-xs text-muted">
+            <div class="flex -space-x-2">
+              <div class="w-7 h-7 rounded-full bg-emerald-200 border-2 border-paper flex items-center justify-center text-[10px] font-bold text-emerald-700">林</div>
+              <div class="w-7 h-7 rounded-full bg-amber-200 border-2 border-paper flex items-center justify-center text-[10px] font-bold text-amber-700">陳</div>
+              <div class="w-7 h-7 rounded-full bg-sky-200 border-2 border-paper flex items-center justify-center text-[10px] font-bold text-sky-700">黃</div>
+              <div class="w-7 h-7 rounded-full bg-rose-200 border-2 border-paper flex items-center justify-center text-[10px] font-bold text-rose-700">王</div>
+            </div>
+            <span>已有 <strong class="text-ink">3,200+</strong> 電商團隊使用</span>
+          </div>
+        </div>
+
+        <!-- Decorative scene (below CTA area) -->
+        <div class="relative mt-10 h-[260px] fade-up">
+          <!-- Plant (back) -->
+          <div class="absolute left-2 bottom-4 w-20 h-32">
+            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-10 rounded-md bg-gradient-to-b from-[#B8794A] to-[#8E5A33]"></div>
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-16 h-20 bg-emerald-500/80 rounded-t-full rounded-b-md"></div>
+            <div class="absolute bottom-10 left-3 w-3 h-12 bg-emerald-600 rounded-full -rotate-12"></div>
+            <div class="absolute bottom-12 left-8 w-3 h-10 bg-emerald-500 rounded-full rotate-6"></div>
+            <div class="absolute bottom-14 left-12 w-3 h-8 bg-emerald-400 rounded-full -rotate-3"></div>
+          </div>
+
+          <!-- Laptop -->
+          <div class="absolute right-10 bottom-6 w-[260px]">
+            <!-- screen -->
+            <div class="rounded-t-xl bg-gray-800 p-2 shadow-[0_18px_30px_-12px_rgba(0,0,0,0.35)]">
+              <div class="rounded-md bg-white overflow-hidden">
+                <!-- tiny app header -->
+                <div class="h-4 bg-brand flex items-center px-1.5 gap-1">
+                  <span class="w-1 h-1 rounded-full bg-white/70"></span>
+                  <span class="w-1 h-1 rounded-full bg-white/70"></span>
+                  <span class="w-1 h-1 rounded-full bg-white/70"></span>
+                </div>
+                <!-- tiny grid -->
+                <div class="p-1.5 grid grid-cols-3 gap-1">
+                  <div class="aspect-[3/4] rounded-sm bg-gradient-to-b from-[#EFE7D5] to-[#C9BCA0]"></div>
+                  <div class="rounded-sm bg-gray-50 p-1 space-y-0.5">
+                    <div class="h-1 rounded bg-emerald-200"></div>
+                    <div class="h-1 rounded bg-gray-200"></div>
+                    <div class="h-1 rounded bg-gray-200"></div>
+                  </div>
+                  <div class="rounded-sm bg-gray-50 p-1 space-y-0.5">
+                    <div class="h-2 rounded bg-emerald-100 flex items-center justify-center text-[6px] font-bold text-emerald-700">AI</div>
+                    <div class="h-1 rounded bg-gray-200"></div>
+                    <div class="h-1 rounded bg-gray-200"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- base -->
+            <div class="h-2 bg-gray-300 rounded-b-xl mx-[-12px]"></div>
+            <div class="h-1 w-24 bg-gray-200 mx-auto rounded-b-md"></div>
+          </div>
+
+          <!-- Phone (in front of laptop) -->
+          <div class="absolute right-2 bottom-2 w-[88px] h-[170px] bg-gray-900 rounded-2xl p-1.5 shadow-[0_18px_30px_-12px_rgba(0,0,0,0.45)]">
+            <div class="w-full h-full bg-white rounded-xl overflow-hidden flex flex-col">
+              <div class="h-5 bg-white border-b border-gray-100 flex items-center justify-center">
+                <div class="w-6 h-1 rounded-full bg-gray-200"></div>
+              </div>
+              <div class="flex-1 p-1.5 space-y-1">
+                <div class="aspect-[3/4] rounded-md bg-gradient-to-b from-[#EFE7D5] to-[#C9BCA0]"></div>
+                <div class="h-1.5 rounded bg-gray-200"></div>
+                <div class="h-1.5 rounded bg-gray-100 w-3/4"></div>
+                <div class="h-4 rounded-md bg-brand mt-1"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cardboard box -->
+          <div class="absolute left-24 bottom-2 w-24 h-20 rotate-[-6deg]">
+            <div class="relative w-full h-full">
+              <div class="absolute inset-0 rounded-md bg-gradient-to-br from-[#C99A66] to-[#9F7340] shadow-[0_10px_20px_-8px_rgba(0,0,0,0.3)]"></div>
+              <!-- top flaps -->
+              <div class="absolute -top-1 left-0 right-0 h-3 bg-[#B6864F] rounded-t-md"></div>
+              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-3 bg-[#8E6234]"></div>
+              <!-- vertical tape -->
+              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-full bg-[#E7CDA1]/70"></div>
+              <!-- label -->
+              <div class="absolute bottom-1 left-1 right-1 px-1.5 py-0.5 bg-white/90 rounded-sm text-[7px] font-bold text-ink text-center">植日生</div>
+            </div>
+          </div>
+
+          <!-- Floating sparkles -->
+          <div class="absolute top-4 right-24 w-2 h-2 rounded-full bg-brand opacity-60"></div>
+          <div class="absolute top-12 right-44 w-1.5 h-1.5 rounded-full bg-emerald-400 opacity-70"></div>
+          <div class="absolute bottom-24 left-12 w-1.5 h-1.5 rounded-full bg-brand/70"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================== FOOTER NOTE ============================== -->
+  <footer class="relative max-w-[1280px] mx-auto px-6 lg:px-10 pb-10 pt-2 text-xs text-muted flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-2">
+      <div class="w-6 h-6 rounded-md bg-brand flex items-center justify-center">
+        <i data-lucide="package" class="w-3.5 h-3.5 text-white"></i>
+      </div>
+      <span class="font-medium text-ink">上架快手</span>
+      <span>© 2025 植日生科技 · 讓每一個商品都有最好的開始</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="#" class="hover:text-ink">隱私權</a>
+      <a href="#" class="hover:text-ink">使用條款</a>
+      <a href="#" class="hover:text-ink">支援</a>
+    </div>
+  </footer>
+</main>
+
+<!-- ============================== INTERACTIONS ============================== -->
+<script>
+  // Initialize Lucide icons
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+      window.lucide.createIcons();
+    }
+  });
+
+  // 1. Toggle switches
+  document.querySelectorAll('.toggle').forEach(t => {
+    t.addEventListener('click', () => t.classList.toggle('on'));
+  });
+
+  // 2. Regenerate AI copy with fade
+  const regenBtn = document.querySelector('#regen-copy');
+  const copyBlock = document.querySelector('#ai-copy-block');
+  const alternativeCopies = [
+    [
+      '胺基酸溫和配方，洗後不緊繃',
+      '添加積雪草與綠茶萃取，舒緩保濕',
+      '細緻泡沫深入毛孔，帶走髒污與多餘油脂',
+      '敏感肌、痘痘肌也適用',
+      '不含酒精、香精、色素，溫和安心'
+    ],
+    [
+      '植物來源胺基酸，洗淨同時保護皮脂膜',
+      '雙重植萃玻尿酸，長效鎖水不乾癢',
+      '微米級慕斯泡沫，溫和帶走老廢角質',
+      '孕婦與敏弱肌皆可天天使用',
+      '無酒精 / 無香精 / 無 Paraben 防腐'
+    ],
+    [
+      '日本進口胺基酸，泡沫細緻不傷膚',
+      '添加 5 重植物萃取，舒緩泛紅不適',
+      '一瓶完成洗卸，淡妝無需重複清潔',
+      '皮膚科醫師推薦，敏弱肌首選',
+      '通過 SGS 檢驗，安全無刺激'
+    ]
+  ];
+  let copyIndex = 0;
+  if (regenBtn && copyBlock) {
+    regenBtn.addEventListener('click', () => {
+      copyBlock.style.transition = 'opacity 200ms ease';
+      copyBlock.style.opacity = '0';
+      setTimeout(() => {
+        copyIndex = (copyIndex + 1) % alternativeCopies.length;
+        const items = alternativeCopies[copyIndex];
+        const lis = items.map(t => `
+          <li class="flex items-start gap-2 text-[13px] leading-snug">
+            <span class="check-bullet"><i data-lucide="check" class="w-3 h-3"></i></span>
+            <span>${t}</span>
+          </li>`).join('');
+        copyBlock.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-medium text-muted">重點文案</span>
+            <span class="text-[11px] text-muted">已優化 SEO 關鍵字</span>
+          </div>
+          <ul class="space-y-2">${lis}</ul>`;
+        if (window.lucide) window.lucide.createIcons();
+        copyBlock.style.opacity = '1';
+      }, 600);
+    });
+  }
+
+  // 3. Fade-up on load
+  window.addEventListener('load', () => {
+    // Only NOW do we hide .fade-up (via html.js-ready CSS rule) — so content stays visible if JS fails
+    document.documentElement.classList.add('js-ready');
+    document.querySelectorAll('.fade-up').forEach((el, i) => {
+      el.style.animation = `fadeUp 600ms ${i * 80}ms ease-out both`;
+    });
+    // Safety: in case window.load already fired
+    if (window.lucide) window.lucide.createIcons();
+  });
+
+  // 4. Re-init icons on a small delay in case CDN script loads after DOMContentLoaded
+  setTimeout(() => {
+    if (window.lucide) window.lucide.createIcons();
+  }, 300);
+</script>
+</body>
+</html>

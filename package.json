@@ -1,0 +1,15 @@
+{
+  "name": "ecommerce-listing-tool",
+  "version": "1.0.0",
+  "description": "靜態 HTML 還原 1280×715 設計稿的行銷 Landing Page，同時把畫面中央那張「上架工作台 - 新增商品」APP 主畫面也一比一做出來，作為 hero 區的視覺主體。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
