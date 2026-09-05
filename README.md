@@ -90,3 +90,4 @@ HOME=/tmp/fakehome npm ci   # 若全域 npm cache 有權限問題
 - 任何近三年的瀏覽器（Chrome / Edge / Firefox / Safari）
 - 唯一外部 CDN 依賴：`fonts.googleapis.com` / `fonts.gstatic.com`（Noto Sans TC）
 - Tailwind 與 Lucide 已本機化，無其他外部請求
+<!-- Last validated: 2026-09-06 by OpenClaw Overnight Dev -->
