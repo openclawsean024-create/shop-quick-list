@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DEPLOY_TARGET: pages
+
+jobs:
+  # Static HTML project: no lint script in package.json → lint skipped
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci --legacy-peer-deps || npm install
+      - run: npm run lint
+        continue-on-error: true  # package.json has no lint script
+
+  # Static HTML project: no test framework → test skipped (manual browser verification per AGENTS.md)
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci --legacy-peer-deps || npm install
+      - run: npm test -- --run 2>&1 || echo "no test script (static HTML)"
+
+  # Static HTML project: no build step → manually assemble dist/ for Pages deploy
+  build:
+    name: Build static site
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble dist/ from static files
+        run: |
+          mkdir -p dist/assets
+          cp index.html dist/
+          cp dashboard.html dist/
+          cp -r assets/* dist/assets/
+          cp README.md dist/ || true
+          cp AGENTS.md dist/ || true
+          ls -la dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: dist/
+          retention-days: 7
+
+  deploy:
+    name: Deploy to pages
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble dist/ from static files
+        run: |
+          mkdir -p dist/assets
+          cp index.html dist/
+          cp dashboard.html dist/
+          cp -r assets/* dist/assets/
+          cp README.md dist/ || true
+          cp AGENTS.md dist/ || true
+
+      - name: Setup Pages
+        if: env.DEPLOY_TARGET == 'pages'
+        uses: actions/configure-pages@v5
+      - name: Upload to Pages
+        if: env.DEPLOY_TARGET == 'pages'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+      - name: Deploy to Pages
+        if: env.DEPLOY_TARGET == 'pages'
+        id: deployment
+        uses: actions/deploy-pages@v4
